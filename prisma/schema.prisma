@@ -24,6 +24,7 @@ model Users {
   groups      GroupMembers[]
   achievements Achievements[]
   notifications Notifications[]
+  messages      GroupMessages[]
 }
 
 model Commitment {
@@ -71,6 +72,7 @@ model Groups {
   created_at  DateTime @default(now())
 
   members     GroupMembers[]
+  messages    GroupMessages[]
 }
 
 model GroupMembers {
@@ -104,3 +106,15 @@ model Notifications {
 
   user        Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
+
+model GroupMessages {
+  id          String   @id @default(uuid())
+  group_id    String
+  user_id     String
+  content     String
+  created_at  DateTime @default(now())
+
+  group       Groups   @relation(fields: [group_id], references: [id], onDelete: Cascade)
+  user        Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+

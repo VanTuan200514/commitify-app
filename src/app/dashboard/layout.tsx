@@ -5,7 +5,9 @@ import {
   TrendingUp, 
   Settings, 
   LogOut,
-  Menu
+  Menu,
+  Users,
+  Award
 } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import LogoutButton from "./LogoutButton";
@@ -34,6 +36,14 @@ export default async function DashboardLayout({
           <Link href="/dashboard/commitments" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
             <Target className="h-5 w-5" />
             <span className="font-medium">Cam kết của tôi</span>
+          </Link>
+          <Link href="/dashboard/groups" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <Users className="h-5 w-5" />
+            <span className="font-medium">Cộng đồng</span>
+          </Link>
+          <Link href="/dashboard/achievements" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <Award className="h-5 w-5" />
+            <span className="font-medium">Bảng thành tích</span>
           </Link>
         </div>
 
