@@ -9,7 +9,8 @@ import {
   Users,
   Award,
   Timer,
-  BarChart
+  BarChart,
+  BookOpen
 } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import MobileNav from "@/components/MobileNav";
@@ -55,6 +56,10 @@ export default async function DashboardLayout({
           <Link href="/dashboard/analysis" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
             <BarChart className="h-5 w-5" />
             <span className="font-medium">Phân tích bản thân</span>
+          </Link>
+          <Link href="/dashboard/reflections" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <BookOpen className="h-5 w-5" />
+            <span className="font-medium">Nhật ký cá nhân</span>
           </Link>
         </div>
 

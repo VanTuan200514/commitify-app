@@ -25,6 +25,7 @@ model Users {
   achievements Achievements[]
   notifications Notifications[]
   messages      GroupMessages[]
+  reflections   Reflection[]
 }
 
 model Commitment {
@@ -117,4 +118,15 @@ model GroupMessages {
   group       Groups   @relation(fields: [group_id], references: [id], onDelete: Cascade)
   user        Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
+
+model Reflection {
+  id          String   @id @default(uuid())
+  user_id     String
+  content     String
+  mood        String   // happy, tired, motivated, neutral, sad
+  date        DateTime @default(now())
+
+  user        Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
 

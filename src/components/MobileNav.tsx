@@ -12,6 +12,7 @@ import {
   Award, 
   Timer,
   BarChart,
+  BookOpen,
   LogOut
 } from "lucide-react";
 
@@ -27,6 +28,7 @@ export default function MobileNav({ session }: { session: any }) {
     { href: "/dashboard/achievements", icon: Award, label: "Bảng thành tích" },
     { href: "/dashboard/focus", icon: Timer, label: "Chế độ tập trung" },
     { href: "/dashboard/analysis", icon: BarChart, label: "Phân tích bản thân" },
+    { href: "/dashboard/reflections", icon: BookOpen, label: "Nhật ký cá nhân" },
   ];
 
   return (

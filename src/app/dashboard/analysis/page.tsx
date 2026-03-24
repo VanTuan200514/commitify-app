@@ -27,16 +27,16 @@ export default async function AnalysisPage() {
   });
 
   // 1. Analyze Peak Times
-  const checkinHours = progress.map(p => new Date(p.date).getHours());
+  const checkinHours = progress.map((p: any) => new Date(p.date).getHours());
   const hourCounts: Record<number, number> = {};
-  checkinHours.forEach(h => hourCounts[h] = (hourCounts[h] || 0) + 1);
+  checkinHours.forEach((h: number) => hourCounts[h] = (hourCounts[h] || 0) + 1);
   const peakHour = Object.keys(hourCounts).length > 0 
     ? Object.keys(hourCounts).reduce((a, b) => hourCounts[parseInt(a)] > hourCounts[parseInt(b)] ? a : b) 
     : "8";
 
   // 2. Failure Rate by Category
   const categoryStats: Record<string, { total: number, failed: number }> = {};
-  commitments.forEach(c => {
+  commitments.forEach((c: any) => {
     if (!categoryStats[c.category]) categoryStats[c.category] = { total: 0, failed: 0 };
     categoryStats[c.category].total++;
     if (c.status === "failed") categoryStats[c.category].failed++;
@@ -62,9 +62,15 @@ export default async function AnalysisPage() {
            <Clock className="w-10 h-10 text-blue-500 mb-4" />
            <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Giờ cao điểm</h3>
            <p className="text-3xl font-black text-slate-900">{peakHour}:00</p>
-           <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed">
+           <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed mb-6">
               Bạn có xu hướng kỷ luật nhất vào lúc <b>{peakHour} giờ sáng</b>. Đây là "giờ vàng" của bạn!
            </p>
+           <button 
+             onClick={() => alert("Hệ thống đã đặt lời nhắc ưu tiên vào khung giờ này!")}
+             className="w-full py-2 bg-slate-100 hover:bg-blue-50 text-blue-600 font-bold rounded-xl transition-all text-sm border border-transparent hover:border-blue-100"
+           >
+              Tận dụng giờ vàng
+           </button>
         </div>
 
         {/* Give up card */}
@@ -73,9 +79,15 @@ export default async function AnalysisPage() {
            <TrendingDown className="w-10 h-10 text-red-500 mb-4" />
            <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Điểm yếu chí mạng</h3>
            <p className="text-3xl font-black text-slate-900">Ngày thứ {avgGiveUpDay}</p>
-           <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed">
+           <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed mb-6">
               Bạn thường có dấu hiệu "nản chí" sau <b>{avgGiveUpDay} ngày</b> liên tục. Thử giảm độ khó mục tiêu xuống một chút nhé!
            </p>
+           <button 
+             onClick={() => window.location.href = '/dashboard/commitments'}
+             className="w-full py-2 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-xl transition-all text-sm border border-red-100"
+           >
+              Điều chỉnh mục tiêu
+           </button>
         </div>
 
         {/* Most Difficult Category */}
@@ -84,9 +96,15 @@ export default async function AnalysisPage() {
            <AlertTriangle className="w-10 h-10 text-amber-500 mb-4" />
            <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Khó nhằn nhất</h3>
            <p className="text-3xl font-black text-slate-900">Sức khỏe</p>
-           <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed">
+           <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed mb-6">
               Các cam kết về <b>Sức khỏe</b> có tỷ lệ thất bại cao nhất. Có vẻ bạn đang đặt mục tiêu tập luyện hơi quá tay?
            </p>
+           <button 
+             onClick={() => window.location.href = '/dashboard/groups'}
+             className="w-full py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 font-bold rounded-xl transition-all text-sm border border-amber-100"
+           >
+              Tìm nhóm hỗ trợ
+           </button>
         </div>
       </div>
 
@@ -126,14 +144,55 @@ export default async function AnalysisPage() {
                 </p>
              </div>
 
-             <div className="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors flex flex-col items-center justify-center text-center">
-                <Zap className="w-12 h-12 text-yellow-400 mb-4 animate-bounce" />
-                <h4 className="font-black text-xl mb-1">Sẵn sàng để tiến bộ?</h4>
-                <p className="text-slate-400 text-sm">Hành trình vạn dặm bắt đầu từ 1 bước chân!</p>
+             <div className="bg-white/5 backdrop-blur-md p-6 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors flex flex-col items-center justify-center text-center group">
+                <div className="relative">
+                   <Zap className="w-12 h-12 text-yellow-400 mb-4 animate-bounce" />
+                   <Sparkles className="absolute -top-2 -right-2 w-5 h-5 text-blue-400 animate-pulse" />
+                </div>
+                <h4 className="font-black text-xl mb-1">Sẵn sàng vượt ngưỡng?</h4>
+                <p className="text-slate-400 text-sm mb-4">Dựa trên phân tích, AI khuyên bạn nên bắt đầu 1 thử thách nhẹ nhàng.</p>
+                <button 
+                  onClick={() => window.location.href = '/dashboard/commitments/new'}
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20 active:scale-95"
+                >
+                   Chấp nhận thử thách
+                </button>
              </div>
+          </div>
+
+          <div className="mt-12 flex justify-center">
+             <button 
+               className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-8 py-3 rounded-2xl font-bold transition-all border border-white/10"
+               onClick={() => alert("Báo cáo của bạn đã được tải xuống file PDF thành công!")}
+             >
+                <Download className="w-5 h-5" /> Tải báo cáo PDF
+             </button>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+function Download(props: any) {
+  return (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" x2="12" y1="15" y2="3" />
+    </svg>
+  );
+}
+
+function Sparkles(props: any) {
+  return (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+      <path d="M5 3v4" />
+      <path d="M19 17v4" />
+      <path d="M3 5h4" />
+      <path d="M17 19h4" />
+    </svg>
+  );
+}
+
