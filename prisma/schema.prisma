@@ -1,0 +1,106 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  password    String
+  university  String?
+  created_at  DateTime @default(now())
+
+  commitments Commitment[]
+  progress    CommitmentProgress[]
+  reminders   ReminderSettings?
+  groups      GroupMembers[]
+  achievements Achievements[]
+  notifications Notifications[]
+}
+
+model Commitment {
+  id          String   @id @default(uuid())
+  user_id     String
+  title       String
+  description String?
+  category    String   // (học tập, kỷ luật, sức khỏe, tài chính)
+  start_date  DateTime
+  end_date    DateTime?
+  target_type String
+  status      String   @default("active") // active, completed, failed
+  
+  user        Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  progress    CommitmentProgress[]
+}
+
+model CommitmentProgress {
+  id             String   @id @default(uuid())
+  commitment_id  String
+  user_id        String
+  date           DateTime @default(now())
+  progress_value Float    @default(0)
+  note           String?
+  status         String   // done, skipped, trying
+
+  commitment     Commitment @relation(fields: [commitment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user           Users      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model ReminderSettings {
+  id        String  @id @default(uuid())
+  user_id   String  @unique
+  email     Boolean @default(true)
+  web_push  Boolean @default(true)
+  time      String  @default("08:00") // Time of the day for the reminder
+
+  user      Users   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Groups {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  created_at  DateTime @default(now())
+
+  members     GroupMembers[]
+}
+
+model GroupMembers {
+  id          String   @id @default(uuid())
+  group_id    String
+  user_id     String
+  role        String   @default("member") // owner, member
+  joined_at   DateTime @default(now())
+
+  group       Groups   @relation(fields: [group_id], references: [id], onDelete: Cascade)
+  user        Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Achievements {
+  id          String   @id @default(uuid())
+  user_id     String
+  name        String
+  description String?
+  earned_at   DateTime @default(now())
+
+  user        Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Notifications {
+  id          String   @id @default(uuid())
+  user_id     String
+  title       String
+  message     String
+  is_read     Boolean  @default(false)
+  created_at  DateTime @default(now())
+
+  user        Users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
