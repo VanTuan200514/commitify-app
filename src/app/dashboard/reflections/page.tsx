@@ -52,20 +52,20 @@ export default async function ReflectionsPage() {
                    <p className="text-gray-400 text-sm italic">"Chưa có nhật ký nào. Hãy viết dòng đầu tiên nhé!"</p>
                 </div>
               ) : (
-                reflections.map((ref) => (
+                reflections.map((ref: any) => (
                   <div key={ref.id} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow group">
                      <div className="flex justify-between items-start mb-3">
                         <span className="text-[10px] font-black uppercase text-blue-500 bg-blue-50 px-2 py-1 rounded-lg tracking-widest">
                            {format(new Date(ref.date), 'dd/MM/yyyy', { locale: vi })}
                         </span>
-                        <span className="text-sm font-bold bg-slate-50 px-2 py-0.5 rounded-lg group-hover:bg-blue-50 transition-colors">
-                           {moods[ref.mood] || "😐"}
-                        </span>
-                     </div>
-                     <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
-                        {ref.content}
-                     </p>
-                  </div>
+                         <span className="text-sm font-bold bg-slate-100 text-slate-800 px-2 py-0.5 rounded-lg group-hover:bg-blue-100 transition-colors">
+                            {moods[ref.mood] || "😐"}
+                         </span>
+                      </div>
+                      <p className="text-slate-700 text-sm font-medium leading-relaxed line-clamp-3">
+                         {ref.content}
+                      </p>
+                   </div>
                 ))
               )}
            </div>

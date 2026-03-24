@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { 
   BarChart, 
   Clock, 
@@ -9,7 +10,9 @@ import {
   TrendingDown, 
   Lightbulb, 
   Zap,
-  Target
+  Target,
+  Download,
+  Sparkles
 } from "lucide-react";
 
 export default async function AnalysisPage() {
@@ -65,12 +68,9 @@ export default async function AnalysisPage() {
            <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed mb-6">
               Bạn có xu hướng kỷ luật nhất vào lúc <b>{peakHour} giờ sáng</b>. Đây là "giờ vàng" của bạn!
            </p>
-           <button 
-             onClick={() => alert("Hệ thống đã đặt lời nhắc ưu tiên vào khung giờ này!")}
-             className="w-full py-2 bg-slate-100 hover:bg-blue-50 text-blue-600 font-bold rounded-xl transition-all text-sm border border-transparent hover:border-blue-100"
-           >
-              Tận dụng giờ vàng
-           </button>
+           <div className="w-full py-2 bg-slate-100 text-blue-600 font-bold rounded-xl text-center text-sm border border-transparent">
+              Giờ vàng đã được thiết lập
+           </div>
         </div>
 
         {/* Give up card */}
@@ -82,12 +82,12 @@ export default async function AnalysisPage() {
            <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed mb-6">
               Bạn thường có dấu hiệu "nản chí" sau <b>{avgGiveUpDay} ngày</b> liên tục. Thử giảm độ khó mục tiêu xuống một chút nhé!
            </p>
-           <button 
-             onClick={() => window.location.href = '/dashboard/commitments'}
-             className="w-full py-2 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-xl transition-all text-sm border border-red-100"
+           <Link 
+             href="/dashboard/commitments"
+             className="block w-full py-2 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-xl transition-all text-center text-sm border border-red-100"
            >
               Điều chỉnh mục tiêu
-           </button>
+           </Link>
         </div>
 
         {/* Most Difficult Category */}
@@ -99,12 +99,12 @@ export default async function AnalysisPage() {
            <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed mb-6">
               Các cam kết về <b>Sức khỏe</b> có tỷ lệ thất bại cao nhất. Có vẻ bạn đang đặt mục tiêu tập luyện hơi quá tay?
            </p>
-           <button 
-             onClick={() => window.location.href = '/dashboard/groups'}
-             className="w-full py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 font-bold rounded-xl transition-all text-sm border border-amber-100"
+           <Link 
+             href="/dashboard/groups"
+             className="block w-full py-2 bg-amber-50 hover:bg-amber-100 text-amber-600 font-bold rounded-xl transition-all text-center text-sm border border-amber-100"
            >
               Tìm nhóm hỗ trợ
-           </button>
+           </Link>
         </div>
       </div>
 
@@ -174,25 +174,4 @@ export default async function AnalysisPage() {
   );
 }
 
-function Download(props: any) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4" />
-      <polyline points="7 10 12 15 17 10" />
-      <line x1="12" x2="12" y1="15" y2="3" />
-    </svg>
-  );
-}
-
-function Sparkles(props: any) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-      <path d="M5 3v4" />
-      <path d="M19 17v4" />
-      <path d="M3 5h4" />
-      <path d="M17 19h4" />
-    </svg>
-  );
-}
 
