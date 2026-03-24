@@ -151,27 +151,22 @@ export default async function AnalysisPage() {
                 </div>
                 <h4 className="font-black text-xl mb-1">Sẵn sàng vượt ngưỡng?</h4>
                 <p className="text-slate-400 text-sm mb-4">Dựa trên phân tích, AI khuyên bạn nên bắt đầu 1 thử thách nhẹ nhàng.</p>
-                <button 
-                  onClick={() => window.location.href = '/dashboard/commitments/new'}
+                <Link 
+                  href="/dashboard/commitments/new"
                   className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20 active:scale-95"
                 >
                    Chấp nhận thử thách
-                </button>
+                </Link>
              </div>
           </div>
 
           <div className="mt-12 flex justify-center">
-             <button 
-               className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-8 py-3 rounded-2xl font-bold transition-all border border-white/10"
-               onClick={() => alert("Báo cáo của bạn đã được tải xuống file PDF thành công!")}
-             >
-                <Download className="w-5 h-5" /> Tải báo cáo PDF
-             </button>
+             <div className="flex items-center gap-2 bg-white/10 px-8 py-3 rounded-2xl font-bold transition-all border border-white/10 opacity-50 cursor-not-allowed">
+                <Download className="w-5 h-5" /> Tải báo cáo PDF (Sắp ra mắt)
+             </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-
