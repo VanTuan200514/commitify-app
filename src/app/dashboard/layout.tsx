@@ -8,7 +8,8 @@ import {
   Menu,
   Users,
   Award,
-  Timer
+  Timer,
+  BarChart
 } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import MobileNav from "@/components/MobileNav";
@@ -50,6 +51,10 @@ export default async function DashboardLayout({
           <Link href="/dashboard/focus" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
             <Timer className="h-5 w-5" />
             <span className="font-medium">Chế độ tập trung</span>
+          </Link>
+          <Link href="/dashboard/analysis" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+            <BarChart className="h-5 w-5" />
+            <span className="font-medium">Phân tích bản thân</span>
           </Link>
         </div>
 
