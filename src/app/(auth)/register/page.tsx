@@ -67,7 +67,7 @@ export default function RegisterPage() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border text-gray-900 bg-white placeholder:text-gray-400"
                   placeholder="Nguyễn Văn A"
                 />
               </div>
@@ -84,7 +84,7 @@ export default function RegisterPage() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border text-gray-900 bg-white placeholder:text-gray-400"
                   placeholder="sinhvien@example.com"
                 />
               </div>
@@ -100,7 +100,7 @@ export default function RegisterPage() {
                   type="text"
                   value={formData.university}
                   onChange={(e) => setFormData({ ...formData, university: e.target.value })}
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border text-gray-900 bg-white placeholder:text-gray-400"
                   placeholder="Đại học Công nghệ"
                 />
               </div>
@@ -117,7 +117,7 @@ export default function RegisterPage() {
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 border text-gray-900 bg-white placeholder:text-gray-400"
                   placeholder="••••••••"
                 />
               </div>
