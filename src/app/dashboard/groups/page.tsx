@@ -1,8 +1,9 @@
 import { getSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { Users, Plus, Shield, ArrowRight } from "lucide-react";
+import { Users, Shield, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import CreateGroupModal from "./CreateGroupModal";
 
 export default async function GroupsPage() {
   const session = await getSession();
@@ -23,53 +24,52 @@ export default async function GroupsPage() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Cộng đồng & Nhóm</h1>
-          <p className="text-gray-500">Cùng nhau học tập và đạt mục tiêu nhanh hơn</p>
+          <h1 className="text-3xl font-black text-slate-900 leading-tight">Cộng đồng & Nhóm</h1>
+          <p className="text-gray-500 font-medium">Cùng nhau học tập và đạt mục tiêu nhanh hơn</p>
         </div>
-        <button className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm">
-          <Plus className="w-5 h-5" />
-          Tạo nhóm mới
-        </button>
+        <CreateGroupModal />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {userGroups.length === 0 ? (
-          <div className="col-span-1 md:col-span-3 bg-white p-8 rounded-xl border border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
-            <div className="w-16 h-16 bg-blue-50 text-blue-500 flex items-center justify-center rounded-full mb-4">
-              <Users className="w-8 h-8" />
+          <div className="col-span-1 md:col-span-3 bg-white p-12 rounded-[40px] border border-dashed border-gray-200 flex flex-col items-center justify-center text-center shadow-inner">
+            <div className="w-20 h-20 bg-blue-50 text-blue-500 flex items-center justify-center rounded-3xl mb-6 shadow-lg shadow-blue-500/10">
+              <Users className="w-10 h-10" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Bạn chưa tham gia nhóm nào</h3>
-            <p className="text-gray-500 max-w-md mb-6">
+            <h3 className="text-2xl font-black text-slate-900 mb-2">Chưa tìm thấy đồng đội?</h3>
+            <p className="text-gray-500 max-w-sm mb-8 font-medium">
               Tham gia các nhóm học tập để nhận được sự hỗ trợ, cùng nhau cam kết và thi đua mỗi ngày.
             </p>
-            <button className="text-blue-600 font-medium hover:text-blue-700 flex items-center gap-1">
-              Khám phá các nhóm <ArrowRight className="w-4 h-4" />
+            <button className="text-blue-600 font-black hover:text-blue-700 flex items-center gap-2 bg-blue-50 px-6 py-2 rounded-xl transition-all">
+              Khám phá các nhóm <ArrowRight className="w-5 h-5" />
             </button>
           </div>
         ) : (
           userGroups.map((member: any) => (
-            <div key={member.id} className="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
-              <div className="h-24 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
-              <div className="p-5">
+            <div key={member.id} className="bg-white border border-gray-100 rounded-[32px] overflow-hidden shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 group">
+              <div className="h-28 bg-gradient-to-br from-blue-600 to-indigo-700 relative">
+                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </div>
+              <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="font-bold text-lg text-slate-900 line-clamp-1">{member.group.name}</h3>
+                  <h3 className="font-black text-xl text-slate-900 line-clamp-1">{member.group.name}</h3>
                   {member.role === "owner" && (
-                    <span className="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
+                    <span className="bg-amber-100 text-amber-700 text-[10px] font-black uppercase px-2 py-1 rounded-lg flex items-center gap-1 border border-amber-200">
                       <Shield className="w-3 h-3" /> Admin
                     </span>
                   )}
                 </div>
-                <p className="text-gray-500 text-sm line-clamp-2 mb-4 h-10">
+                <p className="text-slate-500 text-sm font-medium line-clamp-2 mb-6 h-10 leading-relaxed">
                   {member.group.description || "Nhóm học tập phát triển bản thân mỗi ngày."}
                 </p>
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Users className="w-4 h-4 text-gray-400" />
-                    <span>{member.group._count.members} thành viên</span>
+                <div className="flex items-center justify-between pt-6 border-t border-slate-50">
+                  <div className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest">
+                    <Users className="w-4 h-4" />
+                    <span>{member.group._count.members} Mem</span>
                   </div>
                   <Link 
                     href={`/dashboard/groups/${member.group.id}`}
-                    className="text-sm font-black text-blue-600 hover:text-blue-700 bg-blue-50 px-4 py-2 rounded-xl border border-blue-100 transition-all hover:bg-blue-600 hover:text-white"
+                    className="text-sm font-black text-blue-600 bg-blue-50 px-6 py-2 rounded-xl border border-blue-100 transition-all hover:bg-blue-600 hover:text-white shadow-lg shadow-blue-500/5"
                   >
                     Vào nhóm
                   </Link>
@@ -81,47 +81,49 @@ export default async function GroupsPage() {
       </div>
       
       {/* Bảng xếp hạng Nhóm nổi bật */}
-      <div className="mt-12">
-        <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-          <Trophy className="w-6 h-6 text-yellow-500" />
-          Đấu trường Kỷ luật (Group Leaderboard)
+      <div className="mt-16">
+        <h2 className="text-2xl font-black text-slate-900 mb-8 flex items-center gap-3">
+          <Trophy className="w-8 h-8 text-amber-500" />
+          Đấu trường Kỷ luật
         </h2>
-        <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-[40px] border border-gray-100 overflow-hidden shadow-2xl">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-slate-50 text-slate-500 text-xs font-bold uppercase tracking-wider">
-                <th className="px-6 py-4">Hạng</th>
-                <th className="px-6 py-4">Tên nhóm</th>
-                <th className="px-6 py-4">Thành viên</th>
-                <th className="px-6 py-4 text-right">Tổng Streak</th>
+              <tr className="bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em]">
+                <th className="px-8 py-6">Hạng</th>
+                <th className="px-8 py-6">Tên nhóm</th>
+                <th className="px-8 py-6">Quy mô</th>
+                <th className="px-8 py-6 text-right">Tổng XP</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-50">
               {[
-                { rank: 1, name: "Thợ Săn Học Bổng", members: 124, score: 2840, icon: "🥇" },
-                { rank: 2, name: "Cộng Đồng Gymers HN", members: 89, score: 2150, icon: "🥈" },
-                { rank: 3, name: "Thắp Sáng Ước Mơ", members: 56, score: 1890, icon: "🥉" },
-                { rank: 4, name: "Nhóm Tiết Kiệm Gen Z", members: 210, score: 1420, icon: "" },
+                { rank: 1, name: "Thợ Săn Học Bổng", members: 124, score: 28430, icon: "🥇" },
+                { rank: 2, name: "Cộng Đồng Gymers HN", members: 89, score: 21500, icon: "🥈" },
+                { rank: 3, name: "Thắp Sáng Ước Mơ", members: 56, score: 18900, icon: "🥉" },
+                { rank: 4, name: "Nhóm Tiết Kiệm Gen Z", members: 210, score: 14200, icon: "🔥" },
               ].map((item) => (
-                <tr key={item.rank} className="hover:bg-slate-50 transition-colors">
-                  <td className="px-6 py-4 font-bold text-slate-600">
-                    {item.icon ? item.icon : `#${item.rank}`}
+                <tr key={item.rank} className="hover:bg-blue-50/30 transition-colors group">
+                  <td className="px-8 py-6 font-black text-slate-400 group-hover:text-blue-600 transition-colors">
+                    {item.rank === 1 ? <span className="text-2xl">🥇</span> : 
+                     item.rank === 2 ? <span className="text-2xl">🥈</span> :
+                     item.rank === 3 ? <span className="text-2xl">🥉</span> : `#${item.rank}`}
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="font-bold text-slate-900">{item.name}</span>
+                  <td className="px-8 py-6">
+                    <span className="font-black text-slate-900 text-lg group-hover:text-blue-600 transition-colors">{item.name}</span>
                   </td>
-                  <td className="px-6 py-4 text-gray-500">
+                  <td className="px-8 py-6 text-slate-500 font-bold text-sm">
                     {item.members} thành viên
                   </td>
-                  <td className="px-6 py-4 text-right font-black text-blue-600">
-                    {item.score.toLocaleString()} XP
+                  <td className="px-8 py-6 text-right font-black text-blue-600 text-lg">
+                    {item.score.toLocaleString()} <span className="text-[10px] text-slate-400">XP</span>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="p-4 bg-blue-50 text-center">
-             <button className="text-blue-600 font-bold text-sm hover:underline">Xem thêm bảng xếp hạng toàn cầu</button>
+          <div className="p-6 bg-slate-50 text-center border-t border-slate-100">
+             <button className="text-slate-400 font-black text-[10px] uppercase tracking-widest hover:text-blue-600 transition-colors">Xem bảng xếp hạng toàn cầu</button>
           </div>
         </div>
       </div>
@@ -141,4 +143,3 @@ function Trophy(props: any) {
     </svg>
   );
 }
-
