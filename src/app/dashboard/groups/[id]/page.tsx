@@ -5,12 +5,13 @@ import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import ChatClient from "./ChatClient";
 
-export default async function GroupDetailPage({ params }: { params: { id: string } }) {
+export default async function GroupDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const session = await getSession();
   if (!session) redirect("/login");
 
   const group = await db.groups.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: {
       members: {
         include: { user: true }
