@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { 
   BarChart, 
-  Clock, 
   Calendar, 
   AlertTriangle, 
   TrendingDown, 
@@ -14,6 +13,7 @@ import {
   Download,
   Sparkles
 } from "lucide-react";
+import PeakHourCard from "./PeakHourCard";
 
 export default async function AnalysisPage() {
   const session = await getSession();
@@ -37,6 +37,15 @@ export default async function AnalysisPage() {
     ? Object.keys(hourCounts).reduce((a, b) => hourCounts[parseInt(a)] > hourCounts[parseInt(b)] ? a : b) 
     : "8";
 
+  const getDayPeriod = (hour: string) => {
+    const h = parseInt(hour);
+    if (h >= 4 && h < 12) return "sáng";
+    if (h >= 12 && h < 18) return "chiều";
+    return "tối";
+  };
+
+  const period = getDayPeriod(peakHour);
+
   // 2. Failure Rate by Category
   const categoryStats: Record<string, { total: number, failed: number }> = {};
   commitments.forEach((c: any) => {
@@ -46,7 +55,7 @@ export default async function AnalysisPage() {
   });
 
   // 3. Average "Give Up" Day (Mocking some intelligence here)
-  const avgGiveUpDay = progress.length > 5 ? 4 : 3; // Example logic
+  const avgGiveUpDay = progress.length > 5 ? 4 : 3; 
 
   return (
     <div className="space-y-8 pb-20">
@@ -59,19 +68,8 @@ export default async function AnalysisPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Peak Time Card */}
-        <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-xl overflow-hidden relative group">
-           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -z-10 group-hover:scale-110 transition-transform"></div>
-           <Clock className="w-10 h-10 text-blue-500 mb-4" />
-           <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Giờ cao điểm</h3>
-           <p className="text-3xl font-black text-slate-900">{peakHour}:00</p>
-           <p className="text-sm text-gray-500 mt-4 font-medium leading-relaxed mb-6">
-              Bạn có xu hướng kỷ luật nhất vào lúc <b>{peakHour} giờ sáng</b>. Đây là "giờ vàng" của bạn!
-           </p>
-           <div className="w-full py-2 bg-slate-100 text-blue-600 font-bold rounded-xl text-center text-sm border border-transparent">
-              Giờ vàng đã được thiết lập
-           </div>
-        </div>
+        {/* Peak Time Card (Client Component) */}
+        <PeakHourCard initialPeakHour={peakHour} />
 
         {/* Give up card */}
         <div className="bg-white p-8 rounded-[32px] border border-gray-100 shadow-xl overflow-hidden relative group">
@@ -132,7 +130,7 @@ export default async function AnalysisPage() {
                 <div className="w-10 h-10 bg-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center mb-4 font-black">02</div>
                 <h4 className="font-bold text-lg mb-2">Tận dụng khung giờ vàng</h4>
                 <p className="text-slate-400 text-sm leading-relaxed">
-                   Vì bạn thường check-in vào lúc {peakHour}:00, hãy đặt báo thức lúc {parseInt(peakHour) - 1}:30 để chuẩn bị tâm thế tốt nhất.
+                   Vì bạn thường check-in vào lúc {peakHour}:00 {period}, hãy đặt báo thức lúc {parseInt(peakHour) - 1}:30 để chuẩn bị tâm thế tốt nhất.
                 </p>
              </div>
 
